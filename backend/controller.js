@@ -1,3 +1,5 @@
+const Job = require("./schema.js")
+
 const getAllJobs = (req, res) => {
     try {
         console.log(3, ' api for get all jobs')
