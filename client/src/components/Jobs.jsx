@@ -3,9 +3,9 @@ import "../index.css";
 import axios from "axios";
 
 const Jobs = () => {
-  const [jobs, setJobs] = useState([]); // Stores the list of jobs
-  const [selectedJob, setSelectedJob] = useState(null); // Stores the selected job details
-  const [searchQuery, setSearchQuery] = useState(""); // Stores the location search query
+  const [jobs, setJobs] = useState([]); 
+  const [selectedJob, setSelectedJob] = useState(null); 
+  const [searchQuery, setSearchQuery] = useState(""); 
 
   useEffect(() => {
     getAllJobs();
@@ -14,10 +14,10 @@ const Jobs = () => {
   const getAllJobs = async (location = "") => {
     try {
       const response = await axios.get("https://employee-me-xh9t.onrender.com/api/jobs", {
-        params: { location }, // Send location as query parameter
+        params: { location }, 
       });
       setJobs(response.data.jobs);
-      setSelectedJob(response.data.jobs[0] || null); // Handle empty results
+      setSelectedJob(response.data.jobs[0] || null); 
     } catch (error) {
       console.error("Error fetching jobs: ", error);
     }
