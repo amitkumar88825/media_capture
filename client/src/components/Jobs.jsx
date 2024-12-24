@@ -8,14 +8,17 @@ const Jobs = () => {
   const [searchQuery, setSearchQuery] = useState(""); // Stores the location search query
 
   useEffect(() => {
+    console.log(11 , ' useEffect')
     getAllJobs();
   }, []);
 
   const getAllJobs = async (location = "") => {
     try {
-      const response = await axios.get("http://172.20.10.2:5000/api/jobs", {
+      console.log(16 , 'get All jobs')
+      const response = await axios.get("http://192.168.31.145:6002/api/jobs", {
         params: { location }, // Send location as query parameter
       });
+      console.log(19 , response);
       setJobs(response.data.jobs);
       setSelectedJob(response.data.jobs[0] || null); // Handle empty results
     } catch (error) {
