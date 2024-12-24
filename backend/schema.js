@@ -4,7 +4,8 @@ const jobSchema = new mongoose.Schema({
   jobId: {
     type: Number,
     required: true,
-    unique: true
+    unique: true,
+    alias: 'Job ID (Numeric)' // Maps "Job ID (Numeric)" to jobId
   },
   title: {
     type: String,
@@ -20,11 +21,15 @@ const jobSchema = new mongoose.Schema({
   },
   job_link: {
     type: String,
-    required: true
+    required: true,
+    validate: {
+      validator: (v) => /^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/.test(v),
+      message: 'Invalid job link URL'
+    }
   },
   seniority_level: {
     type: String,
-    required: true
+    default: null
   },
   employment_type: {
     type: String,
@@ -40,10 +45,19 @@ const jobSchema = new mongoose.Schema({
   },
   company_url: {
     type: String,
-    required: true
+    default: null,
+    validate: {
+      validator: (v) => v ? /^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/.test(v) : true,
+      message: 'Invalid company URL'
+    }
   },
   companyImageUrl: {
-    type: String
+    type: String,
+    default: 'https://via.placeholder.com/150',
+    validate: {
+      validator: (v) => /^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/.test(v),
+      message: 'Invalid company image URL'
+    }
   },
   postedDateTime: {
     type: Date,
@@ -51,7 +65,13 @@ const jobSchema = new mongoose.Schema({
   },
   min_exp: {
     type: Number,
-    required: true
+    required: true,
+    validate: {
+      validator: function (v) {
+        return v <= this.max_exp;
+      },
+      message: 'min_exp must be less than or equal to max_exp'
+    }
   },
   max_exp: {
     type: Number,
@@ -64,12 +84,13 @@ const jobSchema = new mongoose.Schema({
   companytype: {
     type: String,
     enum: ['small', 'medium', 'large'],
-    required: true
+    default: null
   }
 }, {
-  timestamps: true // Automatically adds createdAt and updatedAt
+  timestamps: true
 });
 
+// Create Model
 const Job = mongoose.model('Job', jobSchema);
 
 module.exports = Job;
