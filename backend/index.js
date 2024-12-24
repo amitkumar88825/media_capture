@@ -1,12 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors')
 const router = require('./routes')
 
 const app = express()
+app.use(express.json())
+app.use(cors())
 
 // credentials
 const PORT = 5000;
-const DB_URL = "mongodb://localhost/12701/mployee";
+const DB_URL = "mongodb://localhost:27017/mployee";
 
 // middleware
 app.use(express.json())

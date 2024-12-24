@@ -4,8 +4,6 @@ const jobSchema = new mongoose.Schema({
   jobId: {
     type: Number,
     required: true,
-    unique: true,
-    alias: 'Job ID (Numeric)' // Maps "Job ID (Numeric)" to jobId
   },
   title: {
     type: String,

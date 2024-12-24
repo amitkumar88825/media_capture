@@ -1,27 +1,27 @@
-const Job = require("./schema.js")
+const Job = require("./schema.js");
 
-const getAllJobs = (req, res) => {
+// Get all jobs
+const getAllJobs = async (req, res) => {
     try {
-        console.log(3, ' api for get all jobs')
+        const { location } = req.query;
 
+        const query = location ? { location: { $regex: location, $options: 'i' } } : {};
 
+        const jobs = await Job.find(query);
+        res.status(200).json({ success: true, jobs });
     } catch (error) {
-        console.error(error)
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch jobs",
+            error: error.message
+        });
     }
-}
+};
 
 
-const findJobBySearch = (req, res) => {
-    try {
-        console.log(12, 'api for search jobs')
 
-
-    } catch (error) {
-        console.error(error)
-    }
-}
 
 module.exports = {
     getAllJobs,
-    findJobBySearch
-}
+};
