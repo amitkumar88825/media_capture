@@ -40,6 +40,8 @@ const importData = async () => {
   } catch (error) {
     console.error('Error importing data:', error);
     mongoose.connection.close();
+  } finally{
+    process.exit()
   }
 };
 
