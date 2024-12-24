@@ -9,7 +9,7 @@ app.use(cors())
 
 // credentials
 const PORT = 5000;
-const DB_URL = "mongodb://localhost:27017/mployee";
+const DB_URL = "mongodb+srv://panditup571:0sUpbHyYnPNwEODH@traveller.fjilx.mongodb.net/?retryWrites=true&w=majority&appName=traveller";
 
 // middleware
 app.use(express.json())

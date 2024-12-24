@@ -3,7 +3,7 @@ const fs = require('fs');
 const Job = require('./schema');  // Adjust this path if necessary
 
 // MongoDB connection
-mongoose.connect('mongodb://127.0.0.1:27017/mployee', {
+mongoose.connect("mongodb+srv://panditup571:0sUpbHyYnPNwEODH@traveller.fjilx.mongodb.net/?retryWrites=true&w=majority&appName=traveller", {
 
 }).then(() => {
   console.log('MongoDB connected');
