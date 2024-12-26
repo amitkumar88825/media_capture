@@ -15,7 +15,7 @@ const Jobs = () => {
   const getAllJobs = async (location = "") => {
     setIsLoading(true); 
     try {
-      const response = await axios.get("https://74db-2409-40d0-3032-27d-6249-e6dd-9441-10d2.ngrok-free.app/api/jobs", {
+      const response = await axios.get("http://192.168.31.145:5000/api/jobs", {
         params: { location },
       });
 
