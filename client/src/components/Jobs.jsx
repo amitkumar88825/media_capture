@@ -15,7 +15,7 @@ const Jobs = () => {
   const getAllJobs = async (location = "") => {
     setIsLoading(true); // Start loader
     try {
-      const response = await axios.get("https://employee-me-xh9t.onrender.com/api/jobs", {
+      const response = await axios.get("http://172.31.24.91:5000/api/jobs", {
         params: { location },
       });
       setJobs(response.data.jobs);
