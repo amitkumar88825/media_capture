@@ -6,16 +6,16 @@ const Jobs = () => {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // Loader state
+  const [isLoading, setIsLoading] = useState(false); 
 
   useEffect(() => {
     getAllJobs();
   }, []);
 
   const getAllJobs = async (location = "") => {
-    setIsLoading(true); // Start loader
+    setIsLoading(true); 
     try {
-      const response = await axios.get("https://edee-13-60-70-38.ngrok-free.app/api/jobs", {
+      const response = await axios.get("https://74db-2409-40d0-3032-27d-6249-e6dd-9441-10d2.ngrok-free.app/api/jobs", {
         params: { location },
       });
 
@@ -24,14 +24,14 @@ const Jobs = () => {
     } catch (error) {
       console.error("Error fetching jobs: ", error);
     } finally {
-      setIsLoading(false); // Stop loader
+      setIsLoading(false); 
     }
   };
 
   const handleSearch = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
-    getAllJobs(query); // Fetch filtered jobs from the backend
+    getAllJobs(query); 
   };
 
   const handleShare = (job) => {
@@ -59,13 +59,13 @@ const Jobs = () => {
           onChange={handleSearch}
           className="w-full p-2 border-b outline-none"
         />
-        {isLoading ? ( // Show loader while loading
+        {isLoading ? ( 
           <div className="p-4 text-center text-gray-500">Loading jobs...</div>
         ) : (
           <ul>
             {jobs.map((job) => (
               <li
-                key={job._id} // Use a unique key, like _id
+                key={job._id} 
                 onClick={() => setSelectedJob(job)}
                 className={`p-4 border-b cursor-pointer hover:bg-gray-200 ${
                   selectedJob?._id === job._id ? "bg-gray-200" : ""
