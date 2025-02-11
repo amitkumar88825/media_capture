@@ -1,19 +1,23 @@
-import React, { useState } from "react";
+import React, { } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './index.css';
 import Header from './components/navbar/Header';
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/SignUp";
+import Media from "./components/media/Media";
+import NotFound from "./components/NotFound";
 
-
-const  App = () => {
-
-  const [ windowName, setWindowName ] = useState('login');
-
+const App = () => {
   return (
-    <div>
-      <Header windowName={windowName} setWindowName={setWindowName} />
-      {  windowName === 'login' ? <Login /> : <Signup /> }
-    </div>
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/media" element={<Media />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
   );
 }
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
+import { registerUser  } from "../../api";
+
 
 const Signup = () => {
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", city: "", password: "" });
@@ -12,12 +13,12 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5001/api/user/signup", formData);
-      localStorage.setItem("token", response.data.token);
+      const { data } = await registerUser(formData);
+      localStorage.setItem("token", data.token);
       setMessage("Signup successful! Redirecting...");
       setTimeout(() => window.location.href = "/dashboard", 1500);
     } catch (error) {
-      setMessage(error.response?.data?.message || "Signup failed");
+      setMessage(error?.data?.message || "Signup failed");
     }
   };
 
