@@ -1,30 +1,30 @@
+require('dotenv').config(); // Load .env variables
+
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors')
-const router = require('./routes')
+const cors = require('cors');
+const router = require('./routes/index');
 
-const app = express()
-app.use(express.json())
-app.use(cors())
+const app = express();
+app.use(express.json());
+app.use(cors());
 
-// credentials
-const PORT = 5000;
-const DB_URL = "mongodb+srv://panditup571:0sUpbHyYnPNwEODH@traveller.fjilx.mongodb.net/?retryWrites=true&w=majority&appName=traveller";
+// Load credentials from .env
+const PORT = process.env.PORT || 5000;
+const DB_URL = process.env.DB_URL;
 
-// middleware
-app.use(express.json())
+// Database Connection
+mongoose.connect(DB_URL)
+    .then(() => console.log('Database Connection Established'))
+    .catch((err) => console.log(err));
 
-// database Connection
-mongoose.connect(DB_URL).then(() => {
-    console.log('Database Connection Established')
-}).catch((err) => {
-    console.log(err)
-})
+// Routes
+app.use('/api', router);
+app.use('*', (req, res) => {
+    console.log('404 Not Found');
+});
 
-// routes
-app.use('/api', router)
-
-// server connection
+// Server Connection
 app.listen(PORT, () => {
-    console.log(`Server is running on ${PORT}`)
-})
+    console.log(`Server is running on port ${PORT}`);
+});
