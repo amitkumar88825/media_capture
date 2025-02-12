@@ -8,11 +8,12 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user); // Get user from Redux store
+  const user = useSelector((state) => state.auth.user) || JSON.parse(localStorage.getItem("user"));
 
   const handleLogout = () => {
     dispatch(logout()); 
     localStorage.removeItem("authToken");
+    localStorage.removeItem("user");
     navigate("/login");
 
   };
@@ -24,8 +25,10 @@ const Header = () => {
     <nav className="flex justify-between items-center bg-blue-600 p-4 text-white shadow-md">
       <h1 className="text-xl font-bold">Media Capture and Storage</h1>
       <div className="flex items-center gap-4">
-        {user && <span className="font-semibold">{user.name}!</span>}
-        {isAuthPage || isHomePage ? (
+      <span className="font-semibold">
+        {user?.name ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : ""}
+      </span>
+      {isAuthPage || isHomePage ? (
           <>
             <Link to="/login" className="mr-4 hover:underline">
               Login
