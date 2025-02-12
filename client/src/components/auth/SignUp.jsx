@@ -16,7 +16,7 @@ const Signup = () => {
       const { data } = await registerUser(formData);
       localStorage.setItem("token", data.token);
       setMessage("Signup successful! Redirecting...");
-      setTimeout(() => window.location.href = "/dashboard", 1500);
+      setTimeout(() => window.location.href = "/media", 1500);
     } catch (error) {
       setMessage(error?.data?.message || "Signup failed");
     }

@@ -6,6 +6,8 @@ import Login from "./components/auth/Login";
 import Signup from "./components/auth/SignUp";
 import Media from "./components/media/Media";
 import NotFound from "./components/NotFound";
+import WelcomePage from "./components/WelcomePage";
+
 
 const App = () => {
   return (
@@ -15,6 +17,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/media" element={<Media />} />
+        <Route path="/" element={<WelcomePage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
