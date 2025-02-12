@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://media-capture.onrender.com/";
+const API_URL = "https://media-capture.onrender.com/api";
 
 // Register User
 export const registerUser = (data) => axios.post(`${API_URL}/auth/signup`, data);
