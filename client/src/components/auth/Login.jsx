@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../api";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../store/authSlice"; // Import setUser
+import { login } from "../../store/authSlice"; 
 
 
 const Login = () => {
@@ -22,7 +22,7 @@ const Login = () => {
       setMessage(data.message);
       localStorage.setItem("token", data.token); 
       localStorage.setItem("user", JSON.stringify(data.user));
-      dispatch(setUser(data.user)); 
+      dispatch(login(data.user)); 
       navigate("/media");
     } catch (error) {
       setMessage(error?.data?.message || "Login failed");

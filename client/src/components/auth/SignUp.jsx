@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { registerUser  } from "../../api";
-import { setUser } from "../../store/authSlice"; // Import setUser
+import { login } from "../../store/authSlice"; 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +22,7 @@ const Signup = () => {
       const { data } = await registerUser(formData);
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
-      dispatch(setUser(data.user)); 
+      dispatch(login(data.user)); 
       setMessage("Signup successful! Redirecting...");
       navigate("/media")
     } catch (error) {
