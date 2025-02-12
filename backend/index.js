@@ -6,7 +6,7 @@ const router = require('./routes/index');
 
 const app = express();
 app.use(express.json());
-// app.use(cors());
+app.use(cors());
 app.use(cors({ origin: 'https://exquisite-basbousa-0e5399.netlify.app/' ,credentials: true }));
 
 // Database Connection
