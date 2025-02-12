@@ -34,10 +34,18 @@ const registerUser = async (req, res) => {
 // User Login
 const loginUser = async (req, res) => {
   try {
+
+      console.log(38 , ' login user')
+
       const { email, password } = req.body;
+
+      console.log(39 , req.body)
 
       // Check if user exists
       const user = await User.findOne({ email });
+
+      console.log(42 , user)
+
       if (!user) return res.status(400).json({ message: "User not found" });
 
       // Compare password

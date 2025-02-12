@@ -13,6 +13,10 @@ const MediaGallery = () => {
       try {
           const token = localStorage.getItem ("token");
           const user = JSON.parse(localStorage.getItem("user"));
+
+          console.log(17 , "suer")
+          console.log(17 , user);
+
           const response = await axios.get(`https://media-capture.onrender.com/api/media/${user._id}`, {
               headers: {
                   Authorization: `${token}`,

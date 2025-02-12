@@ -18,7 +18,16 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+
+      console.log(22  , ' login user ')
+
+      console.log(24 , formData)
+
       const { data } = await loginUser(formData);
+
+      console.log(23 , data)
+
+
       setMessage(data.message);
       localStorage.setItem("token", data.token); 
       localStorage.setItem("user", JSON.stringify(data.user));
