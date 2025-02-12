@@ -8,7 +8,7 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user) || JSON.parse(localStorage.getItem("user"));
+  const user = useSelector((state) => state.auth.user) || localStorage.getItem("user");
 
   const handleLogout = () => {
     dispatch(logout()); 
