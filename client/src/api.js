@@ -14,16 +14,16 @@ export const uploadMedia = (file, token) => {
   formData.append("file", file);
 
   return axios.post(`${API_URL}/media/upload`, formData, {
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
+    headers: { Authorization: `${token}`, "Content-Type": "multipart/form-data" },
   });
 };
 
 // Fetch Media
 export const fetchMedia = (token, type = "") => axios.get(`${API_URL}/media?type=${type}`, {
-  headers: { Authorization: `Bearer ${token}` },
+  headers: { Authorization: `${token}` },
 });
 
 // Delete Media
 export const deleteMedia = (id, token) => axios.delete(`${API_URL}/media/${id}`, {
-  headers: { Authorization: `Bearer ${token}` },
+  headers: { Authorization: `${token}` },
 });

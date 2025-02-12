@@ -1,35 +1,46 @@
-const multer = require('multer');
-const path = require('path');
+const multer = require("multer");
+const { uploadToS3 } = require("../config/s3.js");
 
-// Storage configuration
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/'); // Files will be stored in the 'uploads' directory
-    },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + path.extname(file.originalname));
-    }
-});
+// Use memory storage instead of disk storage
+const storage = multer.memoryStorage();
 
 // File type validation
 const fileFilter = (req, file, cb) => {
-    const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 
-                              'video/mp4', 'video/mkv', 'video/webm', 
-                              'audio/mp3', 'audio/wav', 'audio/mpeg'];
+  const allowedMimeTypes = [
+    "image/jpeg", "image/png", "image/gif", "image/webp",
+    "video/mp4", "video/mkv", "video/webm",
+    "audio/mp3", "audio/wav", "audio/mpeg",
+  ];
 
-    if (allowedMimeTypes.includes(file.mimetype)) {
-        cb(null, true);
-    } else {
-        cb(new Error('Invalid file type. Only images, videos, and audio files are allowed.'));
-    }
+  if (allowedMimeTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error("Invalid file type. Only images, videos, and audio files are allowed."));
+  }
 };
 
-// Upload middleware
+// Upload middleware (max 100MB)
 const upload = multer({
-    storage: storage,
-    fileFilter: fileFilter,
-    limits: { fileSize: 100 * 1024 * 1024 } // Limit file size to 100MB
+  storage,
+  fileFilter,
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB limit
 });
 
-module.exports = upload;
+// Middleware for handling S3 upload
+const uploadAndSaveToS3 = async (req, res, next) => {
+  try {
+
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+
+    const fileUrl = await uploadToS3(req.file); 
+    req.fileUrl = fileUrl;
+    next();
+  } catch (error) {
+    console.error("S3 Upload Error:", error);
+    return res.status(500).json({ error: "Failed to upload file to S3" });
+  }
+};
+
+module.exports = { upload, uploadAndSaveToS3 }; 

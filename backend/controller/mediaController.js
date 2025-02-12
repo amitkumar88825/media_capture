@@ -1,5 +1,6 @@
 const Media = require("../modals/MediaModal");
-const AWS = require("aws-sdk");
+const { AWS } = require("@aws-sdk/client-s3");
+
 
 exports.uploadMedia = async (req, res) => {
   const { key, location } = req.file;
@@ -12,7 +13,7 @@ exports.uploadMedia = async (req, res) => {
   });
 
   await media.save();
-  res.json(media);
+  res.status(201).json({ message: "Uploaded successfully", media });
 };
 
 exports.getMedia = async (req, res) => {
