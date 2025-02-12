@@ -5,7 +5,6 @@ import axios from "axios";
 
 const MediaGallery = () => {
   const [media, setMedia] = useState([]);
-  const [filter, setFilter] = useState("video");
   const [selectedMedia, setSelectedMedia] = useState(null);
 
   useEffect(() => {
@@ -28,7 +27,7 @@ const MediaGallery = () => {
     };
 
   loadMedia()  
-  }, [filter]);
+  }, []);
 
   const handleDelete = async (id) => {
     const token = localStorage.getItem("token");
@@ -39,18 +38,6 @@ const MediaGallery = () => {
   return (
     <div className="bg-white shadow-lg rounded-2xl p-6 mt-6">
       <h3 className="text-2xl font-bold text-gray-800 text-center mb-4">📸 Media Gallery</h3>
-
-      {/* Filter Dropdown */}
-      <div className="flex justify-center mb-6">
-        <select
-          className="p-2 border rounded-md bg-gray-100 text-gray-700 focus:ring-2 focus:ring-blue-400"
-          onChange={(e) => setFilter(e.target.value)}
-        >
-          <option value="">All Media</option>
-          <option value="image">Images</option>
-          <option value="video">Videos</option>
-        </select>
-      </div>
 
       {/* Media Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
