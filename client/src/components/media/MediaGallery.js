@@ -1,19 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { fetchMedia, deleteMedia } from "../../api";
+import { deleteMedia } from "../../api";
 import MediaPlaer from "./MediaPlayer";
+import axios from "axios";
 
 const MediaGallery = () => {
   const [media, setMedia] = useState([]);
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState("video");
   const [selectedMedia, setSelectedMedia] = useState(null);
 
   useEffect(() => {
+
     const loadMedia = async () => {
-      const token = localStorage.getItem("token");
-      const { data } = await fetchMedia(token, filter);
-      setMedia(data);
-    };
-    loadMedia();
+      try {
+          const token = localStorage.getItem ("token");
+          const response = await axios.get('http://localhost:5001/api/media', {
+              headers: {
+                  Authorization: `${token}`,
+                  'Content-Type': 'application/json'
+              }
+          });
+
+          setMedia(response.data)
+      } catch (error) {
+          console.error('Error fetching media:', error.response ? error.response.data : error.message);
+      }
+  };
+  loadMedia()  
   }, [filter]);
 
   const handleDelete = async (id) => {

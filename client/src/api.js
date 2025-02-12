@@ -19,8 +19,9 @@ export const uploadMedia = (file, token) => {
 };
 
 // Fetch Media
-export const fetchMedia = (token, type = "") => axios.get(`${API_URL}/media?type=${type}`, {
-  headers: { Authorization: `${token}` },
+export const fetchMedia = (token, type = "video") => 
+  axios.get(`${API_URL}/media?type=${type || "video"}`, {
+    headers: { Authorization: `${token}` },
 });
 
 // Delete Media

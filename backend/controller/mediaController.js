@@ -1,37 +1,61 @@
 const Media = require("../modals/MediaModal");
-const { AWS } = require("@aws-sdk/client-s3");
+const { deleteFromS3 } = require("../config/s3");
 
-
-exports.uploadMedia = async (req, res) => {
-  const { key, location } = req.file;
+const uploadMedia = async (req, res) => {
+  try {
+    const { originalname, fileUrl } = req.file;
   
-  const media = new Media({
-    filename: key,
-    url: location,
-    type: req.file.mimetype.startsWith("image") ? "image" : "video",
-    user: req.user.id,
-  });
+    const media = new Media({
+      filename: originalname,
+      url: fileUrl,
+      type: req.file.mimetype.startsWith("image") ? "image" : "video",
+      user: req.user.id,
+    });
 
-  await media.save();
-  res.status(201).json({ message: "Uploaded successfully", media });
+    const saved = await media.save();
+    
+    res.status(201).json({ message: "Uploaded successfully", media });
+  } catch (error) {
+    console.error("Error uploading media:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
-exports.getMedia = async (req, res) => {
-  const { type, page = 1 } = req.query;
-  const filter = type ? { type } : {};
-  const media = await Media.find(filter).limit(10).skip((page - 1) * 10);
-  
-  res.json(media);
+const getMedia = async (req, res) => {
+  try {
+    let { type, page = 1 } = req.query;
+
+    type = type || "video";
+
+    const filter = { type };
+    const media = await Media.find(filter).limit(10).skip((page - 1) * 10);
+
+    res.status(200).json(media);
+  } catch (error) {
+    console.error("Error fetching media:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
-exports.deleteMedia = async (req, res) => {
-  const media = await Media.findById(req.params.id);
-  if (!media) return res.status(404).json({ message: "Media not found" });
+const deleteMedia = async (req, res) => {
+  try {
+    const media = await Media.findById(req.params.id);
 
-  // Delete from S3
-  const s3 = new AWS.S3();
-  await s3.deleteObject({ Bucket: process.env.AWS_BUCKET_NAME, Key: media.filename }).promise();
+    if (!media) {
+      return res.status(404).json({ message: "Media not found" });
+    }
 
-  await media.remove();
-  res.json({ message: "Media deleted" });
+    // Delete from S3
+    await deleteFromS3(media.url);
+
+    // Delete from MongoDB
+    await Media.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({ message: "Media deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting media:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 };
+
+module.exports = { uploadMedia, getMedia, deleteMedia };

@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../api";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/authSlice"; // Import setUser
 
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -18,7 +21,8 @@ const Login = () => {
       const { data } = await loginUser(formData);
       setMessage(data.message);
       localStorage.setItem("token", data.token); 
-      localStorage.setItem("user", JSON.stringify(data.user)); 
+      localStorage.setItem("user", JSON.stringify(data.user));
+      dispatch(setUser(data.user)); 
       navigate("/media");
     } catch (error) {
       setMessage(error?.data?.message || "Login failed");

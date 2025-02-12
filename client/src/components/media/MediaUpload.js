@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { uploadMedia } from "../../api";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const MediaUpload = ({ onUploadSuccess }) => {
   const [file, setFile] = useState(null);
@@ -10,15 +12,20 @@ const MediaUpload = ({ onUploadSuccess }) => {
     if (!file || !token) return;
 
     setUploading(true);
-    await uploadMedia(file, token);
-    
+    try {
+      await uploadMedia(file, token);
+      toast.success("Media uploaded successfully!");
+      onUploadSuccess();
+    } catch (error) {
+      toast.error("Failed to upload media. Please try again.");
+    }
     setUploading(false);
     setFile(null);
-    onUploadSuccess();
   };
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-6 text-center">
+      <ToastContainer /> {/* Add this component to render toasts */}
       <h3 className="text-2xl font-semibold text-gray-800 mb-4">📤 Upload Media</h3>
       
       {/* File Input */}

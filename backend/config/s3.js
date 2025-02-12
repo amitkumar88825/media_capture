@@ -1,4 +1,4 @@
-const { S3Client } = require("@aws-sdk/client-s3");
+const { S3Client, DeleteObjectCommand } = require("@aws-sdk/client-s3");
 const { Upload } = require("@aws-sdk/lib-storage");
 const dotenv = require("dotenv");
 const fs = require("fs");
@@ -40,4 +40,24 @@ const uploadToS3 = async (file) => {
   }
 };
 
-module.exports = { uploadToS3 };
+// Function to delete an object from S3
+const deleteFromS3 = async (fileKey) => {
+  try {
+
+    const deleteParams = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: fileKey, 
+    };
+
+    const command = new DeleteObjectCommand(deleteParams);
+
+    await s3Client.send(command);
+
+    return { success: true, message: "File deleted successfully" };
+  } catch (error) {
+    console.error("Error deleting from S3:", error);
+    throw error;
+  }
+};
+
+module.exports = { uploadToS3, deleteFromS3 };

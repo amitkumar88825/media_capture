@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { registerUser  } from "../../api";
+import { setUser } from "../../store/authSlice"; // Import setUser
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 
 const Signup = () => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", city: "", password: "" });
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -15,8 +21,10 @@ const Signup = () => {
     try {
       const { data } = await registerUser(formData);
       localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      dispatch(setUser(data.user)); 
       setMessage("Signup successful! Redirecting...");
-      setTimeout(() => window.location.href = "/media", 1500);
+      navigate("/media")
     } catch (error) {
       setMessage(error?.data?.message || "Signup failed");
     }

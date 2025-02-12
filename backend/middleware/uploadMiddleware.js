@@ -35,7 +35,8 @@ const uploadAndSaveToS3 = async (req, res, next) => {
     }
 
     const fileUrl = await uploadToS3(req.file); 
-    req.fileUrl = fileUrl;
+
+    req.file.fileUrl = fileUrl;
     next();
   } catch (error) {
     console.error("S3 Upload Error:", error);
