@@ -6,7 +6,25 @@ const router = require('./routes/index');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
+
+const cors = require('cors');
+
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://exquisite-basbousa-0e5399.netlify.app'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 
 // Database Connection
 connectDB();
