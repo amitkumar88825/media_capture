@@ -13,7 +13,8 @@ const MediaGallery = () => {
     const loadMedia = async () => {
       try {
           const token = localStorage.getItem ("token");
-          const response = await axios.get('http://localhost:5001/api/media', {
+          const user = JSON.parse(localStorage.getItem("user"));
+          const response = await axios.get(`http://localhost:5001/api/media/${user._id}`, {
               headers: {
                   Authorization: `${token}`,
                   'Content-Type': 'application/json'
@@ -24,7 +25,8 @@ const MediaGallery = () => {
       } catch (error) {
           console.error('Error fetching media:', error.response ? error.response.data : error.message);
       }
-  };
+    };
+
   loadMedia()  
   }, [filter]);
 

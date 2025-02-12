@@ -1,5 +1,7 @@
 const Media = require("../modals/MediaModal");
 const { deleteFromS3 } = require("../config/s3");
+const mongoose = require("mongoose");
+
 
 const uploadMedia = async (req, res) => {
   try {
@@ -23,12 +25,9 @@ const uploadMedia = async (req, res) => {
 
 const getMedia = async (req, res) => {
   try {
-    let { type, page = 1 } = req.query;
-
-    type = type || "video";
-
-    const filter = { type };
-    const media = await Media.find(filter).limit(10).skip((page - 1) * 10);
+    const userId = new mongoose.Types.ObjectId(req.params.userId);
+    
+    const media = await Media.find({ user: userId }).sort({ createdAt: -1 });
 
     res.status(200).json(media);
   } catch (error) {

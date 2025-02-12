@@ -7,7 +7,7 @@ const { uploadMedia, getMedia, deleteMedia } = require("../controller/mediaContr
 const router = express.Router();
 
 router.post("/upload", authenticateUser, upload.single("file"), uploadAndSaveToS3, uploadMedia);
-router.get("/", authenticateUser, getMedia);
+router.get("/:userId", authenticateUser, getMedia);
 router.delete("/:id", authenticateUser, deleteMedia);
 
 module.exports = router;
