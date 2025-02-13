@@ -39,8 +39,6 @@ const getMedia = async (req, res) => {
 const deleteMedia = async (req, res) => {
   try {
 
-    console.log(42 , 'delete media')
-
     const media = await Media.findById(req.params.id);
 
     console.log(46 , media)

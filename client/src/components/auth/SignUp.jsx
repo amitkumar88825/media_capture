@@ -19,7 +19,7 @@ const Signup = () => {
     e.preventDefault();
     try {      
       const response = await axios.post(`https://media-capture.onrender.com/api/auth/signup`, formData);
-      if(response.status === 200) {
+      if(response.status === 201) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
         dispatch(login(response.data.user)); 

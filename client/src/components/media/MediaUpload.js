@@ -1,5 +1,5 @@
+import axios from "axios";
 import React, { useState } from "react";
-import { uploadMedia } from "../../api";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -8,12 +8,22 @@ const MediaUpload = ({ onUploadSuccess }) => {
   const [uploading, setUploading] = useState(false);
 
   const handleUpload = async () => {
+
     const token = localStorage.getItem("token");
     if (!file || !token) return;
-
     setUploading(true);
     try {
-      await uploadMedia(file, token);
+      const formData = new FormData();
+      formData.append("file", file);
+
+      console.log(19  ,token)
+
+      const response = await axios.get(`https://media-capture.onrender.com/api/media/upload`, formData, {
+        headers: { Authorization: `${token}`, "Content-Type": "multipart/form-data" },
+      });
+
+      console.log(25 , response)
+      
       toast.success("Media uploaded successfully!");
       onUploadSuccess();
     } catch (error) {
