@@ -19,7 +19,7 @@ const Header = () => {
   };
 
   const isAuthPage = location.pathname === "/login" || location.pathname === "/signup";
-  const isHomePage = location.pathname === "/"; // Check if URL is "/"
+  const isHomePage = location.pathname === "/"; 
 
   return (
     <nav className="flex justify-between items-center bg-blue-600 p-4 text-white shadow-md">

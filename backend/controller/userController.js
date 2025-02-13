@@ -5,6 +5,9 @@ const User = require('../modals/UserModal');
 // User Signup
 const registerUser = async (req, res) => {
     try {
+
+      console.log(9 , 'register user')
+
       const { name, email, phone, city, password } = req.body;
   
       // Validate input

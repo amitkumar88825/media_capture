@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { deleteMedia } from "../../api";
 import MediaPlaer from "./MediaPlayer";
 import axios from "axios";
 
@@ -13,9 +12,6 @@ const MediaGallery = () => {
       try {
           const token = localStorage.getItem ("token");
           const user = JSON.parse(localStorage.getItem("user"));
-
-          console.log(17 , "suer")
-          console.log(17 , user);
 
           const response = await axios.get(`https://media-capture.onrender.com/api/media/${user._id}`, {
               headers: {
@@ -34,8 +30,15 @@ const MediaGallery = () => {
   }, []);
 
   const handleDelete = async (id) => {
-    const token = localStorage.getItem("token");
-    await deleteMedia(id, token);
+
+    const token = localStorage.getItem ("token");
+
+    const response = await axios.delete(`https://media-capture.onrender.com/api/media/${id}`, {
+        headers: {
+            Authorization: `${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
     setMedia(media.filter((item) => item._id !== id));
   };
 

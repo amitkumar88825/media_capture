@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { registerUser  } from "../../api";
 import { login } from "../../store/authSlice"; 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -18,13 +17,15 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const { data } = await registerUser(formData);
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      dispatch(login(data.user)); 
-      setMessage("Signup successful! Redirecting...");
-      navigate("/media")
+    try {      
+      const response = await axios.post(`https://media-capture.onrender.com/api/auth/signup`, formData);
+      if(response.status === 200) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        dispatch(login(response.data.user)); 
+        setMessage("Signup successful! Redirecting...");
+        navigate("/media")
+      }
     } catch (error) {
       setMessage(error?.data?.message || "Signup failed");
     }

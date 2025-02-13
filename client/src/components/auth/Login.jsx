@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../api";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/authSlice"; 
-
+import axios from "axios";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -18,21 +17,16 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-
-      console.log(22  , ' login user ')
-
-      console.log(24 , formData)
-
-      const { data } = await loginUser(formData);
-
-      console.log(23 , data)
-
-
-      setMessage(data.message);
-      localStorage.setItem("token", data.token); 
-      localStorage.setItem("user", JSON.stringify(data.user));
-      dispatch(login(data.user)); 
-      navigate("/media");
+      if(formData) {
+        const response = await axios.post(`https://media-capture.onrender.com/api/auth/login`, formData);
+        if(response.status === 200) {
+          setMessage(response.data.message);
+          localStorage.setItem("token", response.data.token); 
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+          dispatch(login(response.data.user)); 
+          navigate("/media");  
+        }
+      }
     } catch (error) {
       setMessage(error?.data?.message || "Login failed");
     }
