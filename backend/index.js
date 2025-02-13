@@ -12,19 +12,24 @@ const allowedOrigins = [
   'https://exquisite-basbousa-0e5399.netlify.app'
 ];
 
+
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: '*',
   credentials: true
 }));
 
 // Database Connection
 connectDB();
+
+app.use((req, res, next) => {
+    console.log(`Incoming Request:`);
+    console.log(`Origin: ${req.headers.origin || 'Direct Request'}`);
+    console.log(`Method: ${req.method}`);
+    console.log(`Path: ${req.originalUrl}`);
+    console.log(`IP: ${req.ip}`);
+    console.log(`User-Agent: ${req.headers['user-agent']}`);
+    next();
+});
 
 // Fix: Define req, res in the callback function
 app.get('/', (req, res) => {
