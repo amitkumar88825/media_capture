@@ -7,9 +7,9 @@ const router = require('./routes/index');
 const app = express();
 
 app.use(cors({
-    origin: '*',
+    origin: ["http://localhost:3000", "https://exquisite-basbousa-0e5399.netlify.app"],
     credentials: true,
-  }));
+}));
 
 // Database Connection
 connectDB();

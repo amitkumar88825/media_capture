@@ -4,11 +4,7 @@ const User = require('../modals/UserModal');
 
 const registerUser = async (req, res) => {
     try {
-        console.log("Received request body:", req.body);
-
         const { name, email, phone, city, password } = req.body;
-
-        console.log(11 , name , email , phone , city , password)
 
         if (!name || !email || !phone || !city || !password) {
             return res.status(400).json({ message: "All fields are required" });
@@ -21,13 +17,9 @@ const registerUser = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        console.log(24 , hashedPassword)
-
         const newUser = new User({ name, email, phone, city, password: hashedPassword });
         
         const user = await newUser.save();
-
-        console.log(30 , user)
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
@@ -64,10 +56,9 @@ const loginUser =  async (req, res) => {
           return res.status(401).json({ error: "Invalid credentials" });
       }
 
-      console.log("Password matched, generating token...");
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-      return res.json({ message: "Login successful", token, user });
+      return res.status(200).json({ message: "Login successful", token, user });
   } catch (error) {
       console.error("Login Error:", error);
       return res.status(500).json({ error: "Server error", details: error.message });

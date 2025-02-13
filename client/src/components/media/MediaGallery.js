@@ -33,7 +33,7 @@ const MediaGallery = () => {
 
     const token = localStorage.getItem ("token");
 
-    const response = await axios.delete(`https://media-capture.onrender.com/api/media/${id}`, {
+    await axios.delete(`https://media-capture.onrender.com/api/media/${id}`, {
         headers: {
             Authorization: `${token}`,
             'Content-Type': 'application/json'
@@ -46,7 +46,6 @@ const MediaGallery = () => {
     <div className="bg-white shadow-lg rounded-2xl p-6 mt-6">
       <h3 className="text-2xl font-bold text-gray-800 text-center mb-4">📸 Media Gallery</h3>
 
-      {/* Media Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {media.length > 0 ? (
           media.map((item) => (
@@ -79,7 +78,6 @@ const MediaGallery = () => {
         )}
       </div>
 
-      {/* Media Modal */}
       {selectedMedia && (
         <MediaPlaer onClose={() => setSelectedMedia(null)}>
           {selectedMedia.type === "image" ? (

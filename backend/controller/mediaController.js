@@ -41,16 +41,12 @@ const deleteMedia = async (req, res) => {
 
     const media = await Media.findById(req.params.id);
 
-    console.log(46 , media)
-
     if (!media) {
       return res.status(404).json({ message: "Media not found" });
     }
 
-    // Delete from S3
     await deleteFromS3(media.url);
 
-    // Delete from MongoDB
     await Media.findByIdAndDelete(req.params.id);
 
     res.status(200).json({ message: "Media deleted successfully" });

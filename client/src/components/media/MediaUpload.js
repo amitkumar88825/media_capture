@@ -8,7 +8,6 @@ const MediaUpload = ({ onUploadSuccess }) => {
   const [uploading, setUploading] = useState(false);
 
   const handleUpload = async () => {
-
     const token = localStorage.getItem("token");
     if (!file || !token) return;
     setUploading(true);
@@ -16,14 +15,9 @@ const MediaUpload = ({ onUploadSuccess }) => {
       const formData = new FormData();
       formData.append("file", file);
 
-      console.log(19  ,token)
-
-      const response = await axios.get(`https://media-capture.onrender.com/api/media/upload`, formData, {
+      await axios.post(`https://media-capture.onrender.com/api/media/upload`, formData, {
         headers: { Authorization: `${token}`, "Content-Type": "multipart/form-data" },
       });
-
-      console.log(25 , response)
-      
       toast.success("Media uploaded successfully!");
       onUploadSuccess();
     } catch (error) {
@@ -35,7 +29,7 @@ const MediaUpload = ({ onUploadSuccess }) => {
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-6 text-center">
-      <ToastContainer /> {/* Add this component to render toasts */}
+      <ToastContainer />
       <h3 className="text-2xl font-semibold text-gray-800 mb-4">📤 Upload Media</h3>
       
       {/* File Input */}
