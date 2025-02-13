@@ -35,7 +35,7 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
 
-    process.stdout.write(38, req.body);
+    process.stdout.write(req.body);
 
       const { email, password } = req.body;
 

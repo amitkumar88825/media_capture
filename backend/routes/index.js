@@ -5,7 +5,7 @@ const mediaRoutes = require('./mediaRoute');
 
 const router = express.Router();
 
-process.stdout.write(8 , "Logging with stdout\n");
+process.stdout.write("Logging with stdout\n");
 
 router.use('/auth', userRoutes); 
 router.use('/media', mediaRoutes);
