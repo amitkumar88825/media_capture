@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const API_URL = "https://media-capture.onrender.com/api";
+const API_URL = "https://media-capture.onrender.com";
 
 // Register User
-export const registerUser = (data) => axios.post(`${API_URL}/auth/signup`, data);
+export const registerUser = (data) => axios.post(`${API_URL}/api/auth/signup`, data);
 
 // Login User
-export const loginUser = (data) => axios.post(`${API_URL}/auth/login`, data);
+export const loginUser = (data) => axios.post(`${API_URL}/api/auth/login`, data);
 
 // Upload Media
 export const uploadMedia = (file, token) => {
