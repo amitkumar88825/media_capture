@@ -6,7 +6,6 @@ const router = require('./routes/index');
 
 const app = express();
 app.use(express.json());
-// app.use(cors());
 
 const allowedOrigins = [
   'http://localhost:3000',
@@ -27,12 +26,22 @@ app.use(cors({
 // Database Connection
 connectDB();
 
+// Fix: Define req, res in the callback function
+app.get('/', (req, res) => {
+    res.json({ message: 'Welcome to the API' });
+});
+
+// API Routes
 app.use('/api', router);
+
+// Fix: Send a 404 response
 app.use('*', (req, res) => {
     console.log('404 Not Found');
+    res.status(404).json({ error: 'Not Found' });
 });
 
 // Server Connection
-app.listen(process.env.PORT, '0.0.0.0' ,() => {
-    console.log(`Server is running on port ${process.env.PORT}`);
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server is running on port ${PORT}`);
 });
