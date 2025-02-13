@@ -32,33 +32,73 @@ const registerUser = async (req, res) => {
   };
 
 // User Login
-const loginUser = async (req, res) => {
-  try {
+// const loginUser = async (req, res) => {
+//   try {
 
-    process.stdout.write(req.body);
+//     process.stdout.write(req.body);
+
+//       const { email, password } = req.body;
+
+//       console.log(39 , req.body)
+
+//       // Check if user exists
+//       const user = await User.findOne({ email });
+
+//       console.log(42 , user)
+
+//       if (!user) return res.status(400).json({ message: "User not found" });
+
+//       // Compare password
+//       const isMatch = await bcrypt.compare(password, user.password);
+//       if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+
+//       // Generate JWT token
+//       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+//       res.status(200).json({ message: "Login successful", token, user });
+//   } catch (error) {
+//       res.status(500).json({ message: "Server error", error });
+//   }
+// };
+
+const loginUser =  async (req, res) => {
+  try {
+      console.log("Incoming login request:", req.body);
 
       const { email, password } = req.body;
+      if (!email || !password) {
+          console.error("Missing email or password");
+          return res.status(400).json({ error: "All fields are required" });
+      }
 
-      console.log(39 , req.body)
-
-      // Check if user exists
       const user = await User.findOne({ email });
+      if (!user) {
+          console.error("User not found:", email);
+          return res.status(404).json({ error: "User not found" });
+      }
 
-      console.log(42 , user)
+      // Debugging bcrypt.compare()
+      console.log("User found, checking password:", user);
 
-      if (!user) return res.status(400).json({ message: "User not found" });
+      if (!user.password) {
+          console.error("User password is missing in the database!");
+          return res.status(500).json({ error: "User password is missing in the database" });
+      }
 
-      // Compare password
       const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+      if (!isMatch) {
+          console.error("Invalid password attempt for user:", email);
+          return res.status(401).json({ error: "Invalid credentials" });
+      }
 
-      // Generate JWT token
+      console.log("Password matched, generating token...");
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-      res.status(200).json({ message: "Login successful", token, user });
+      return res.json({ message: "Login successful", token, user });
   } catch (error) {
-      res.status(500).json({ message: "Server error", error });
+      console.error("Login Error:", error); // 🔴 This will log the real error
+      return res.status(500).json({ error: "Server error", details: error.message });
   }
-};
+});
 
 module.exports = { registerUser, loginUser };
