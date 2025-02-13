@@ -27,10 +27,6 @@ app.use(cors({
 // Database Connection
 connectDB();
 
-// Routes
-app.use('/', (req, res) => {
-    res.send('<h1>Welcome to our Media Capture and Storage App</h1>');
-});
 app.use('/api', router);
 app.use('*', (req, res) => {
     console.log('404 Not Found');
