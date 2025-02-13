@@ -99,6 +99,6 @@ const loginUser =  async (req, res) => {
       console.error("Login Error:", error); // 🔴 This will log the real error
       return res.status(500).json({ error: "Server error", details: error.message });
   }
-});
+};
 
 module.exports = { registerUser, loginUser };
