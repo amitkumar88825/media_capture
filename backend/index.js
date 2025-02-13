@@ -7,7 +7,7 @@ const router = require('./routes/index');
 const app = express();
 
 app.use(cors({
-    origin: ["http://localhost:3000", "https://exquisite-basbousa-0e5399.netlify.app"],
+    origin: ["http://localhost:3000", "https://earnest-biscochitos-c1926b.netlify.app"],
     credentials: true,
 }));
 
