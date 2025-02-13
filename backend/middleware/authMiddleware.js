@@ -2,6 +2,9 @@ const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
     const token = req.header("Authorization");
+
+    console.log(6 , 'middle ware')
+
     if (!token) return res.status(401).json({ message: "Access Denied" });
     console.log(6 , token)
     try {

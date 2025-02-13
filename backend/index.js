@@ -14,18 +14,9 @@ app.use(cors({
 // Database Connection
 connectDB();
 
+// middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.use((req, res, next) => {
-    console.log(`Incoming Request:`);
-    console.log(`Origin: ${req.headers.origin || 'Direct Request'}`);
-    console.log(`Method: ${req.method}`);
-    console.log(`Path: ${req.originalUrl}`);
-    console.log(`IP: ${req.ip}`);
-    console.log(`User-Agent: ${req.headers['user-agent']}`);
-    next();
-});
 
 // API Routes
 app.use('/api', router);
