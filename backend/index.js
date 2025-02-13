@@ -31,19 +31,8 @@ app.use((req, res, next) => {
     next();
 });
 
-// Fix: Define req, res in the callback function
-app.get('/', (req, res) => {
-    res.json({ message: 'Welcome to the API' });
-});
-
 // API Routes
 app.use('/api', router);
-
-// Fix: Send a 404 response
-app.use('*', (req, res) => {
-    console.log('404 Not Found');
-    res.status(404).json({ error: 'Not Found' });
-});
 
 // Server Connection
 const PORT = process.env.PORT || 5000;
